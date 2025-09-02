@@ -261,4 +261,80 @@ footer {
     .features {
         padding: 50px 20px;
     }
+
 }
+
+
+
+
+/* ---------- Opening overlay and split animation ---------- */
+#opening-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none; /* فقط تزئینی */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    --split-duration: 800ms;
+  }
+  
+  /* دو نیمه که از وسط جدا میشن */
+  #opening-overlay .split {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 51%;
+    transition: transform var(--split-duration) cubic-bezier(.22,.9,.2,1);
+    will-change: transform;
+    background: rgb(43, 3, 104);; /* آبی دلخواه */
+  }
+  
+  /* left / right placement */
+  #opening-overlay .left { left: 0; transform: translateX(0); }
+  #opening-overlay .right { right: 0; transform: translateX(0); }
+  
+  /* لوگو مرکزی که از بالا میاد و fade میشه */
+  #opening-logo {
+    width: 400px;
+    height: auto;
+    z-index: 10000;
+    transform: translateY(-180px);
+    opacity: 0;
+    transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 500ms ease;
+    pointer-events: none;
+  }
+  
+  /* حالتِ نمایان شدن لوگو */
+  #opening-overlay.logo-in #opening-logo {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /* حالتِ باز شدن (نیمه‌ها به طرفین میرن و صفحه نمایش میشه) */
+  #opening-overlay.reveal .left { transform: translateX(-110%); }
+  #opening-overlay.reveal .right { transform: translateX(110%); }
+  
+  /* حالتِ پوشش (نیمه‌ها از کناره‌ها میان وسط و صفحه رو می‌پوشونن) */
+  #opening-overlay.cover .left  { transform: translateX(0); }
+  #opening-overlay.cover .right { transform: translateX(0); }
+  #opening-overlay.cover { pointer-events: auto; } /* وقتی کاور فعال هست ممکنه بخوای interaction رو بلاک کنی */
+  
+  /* وقتی کامل تموم شد overlay مخفی میشه */
+  #opening-overlay.hidden { display: none !important; }
+  
+  /* ---------- Home slide-in from right (fade) ---------- */
+  .slide-in {
+    transform: translateX(40px);
+    opacity: 0;
+    transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms ease;
+    will-change: transform, opacity;
+  }
+  
+  /* وقتی المان دیده شد این کلاس اضافه میشه */
+  .slide-in.in-view {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
