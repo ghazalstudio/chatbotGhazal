@@ -445,3 +445,164 @@ document.querySelector('.vijegi').addEventListener('click', function (e) {
         behavior: 'smooth'
     });
 });
+
+
+
+
+/* ---------- نمایش/ناوبری با انیمیشن اوپنینگ و کاور ---------- */
+
+
+const openingOverlay = document.getElementById('opening-overlay');
+const openingLogo = document.getElementById('opening-logo');
+
+let currentSectionId = null;
+
+/* helper: واقعی نمایش بخش (بدون انیمیشن) */
+function _showSectionImmediate(id) {
+  sections.forEach(sec => sec.style.display = "none");
+  const target = document.getElementById(id);
+  if (target) {
+    target.style.display = "block";
+    localStorage.setItem(STORAGE_SECTION, id);
+    currentSectionId = id;
+  }
+}
+
+/* تابعی که صفحه را با افکت کاور -> تعویض -> بازکردن نمایش میدهد */
+function navigateTo(id) {
+  if (id === currentSectionId) return; // اگه همان صفحه است کاری نکن
+  // 1) Play cover (نیمه‌ها به وسط میان و صفحه رو می‌پوشونن)
+  playCoverSequence(() => {
+    // 2) وقتی پوشش کامل شد، بخش جدید رو نمایش میدیم فوری
+    _showSectionImmediate(id);
+    // 3) سپس overlay رو باز می‌کنیم تا نصف شود و بخش جدید نمایش داده شود
+    playRevealSequence();
+  });
+}
+
+/* play opening sequence on initial load:
+   sequence: logo slide-in -> split reveal -> hide overlay -> callback (show section) */
+function playOpeningSequence(callback) {
+  openingOverlay.classList.remove('hidden');
+  // ابتدا مطمئن شو نیمه‌ها در وسط قرار دارن (پوشش کامل)
+  openingOverlay.classList.add('cover');
+  openingOverlay.classList.remove('reveal');
+  // لوگو بیاید
+  setTimeout(() => openingOverlay.classList.add('logo-in'), 60);
+  // پس از لوگو، split ها باز شوند
+  setTimeout(() => {
+    openingOverlay.classList.add('reveal');
+    openingOverlay.classList.remove('cover');
+  }, 900); // حدودن بعد از 900ms لوگو دیده شده و split باز میشه
+
+  // وقتی بازشدن تموم شد مخفی کن و اجرا callback
+  setTimeout(() => {
+    openingOverlay.classList.add('hidden');
+    openingOverlay.classList.remove('logo-in');
+    if (typeof callback === 'function') callback();
+  }, 1700);
+}
+
+/* play cover (نیمه‌ها از طرفین میان وسط)، سپس callback اجرا میشه */
+function playCoverSequence(callback) {
+  openingOverlay.classList.remove('hidden');
+  // ابتدا هرچی حالت reveal هست بردار
+  openingOverlay.classList.remove('reveal');
+  // اطمینان حاصل کن نیمه‌ها در حالت کاملاً کنار صفحه هستن (فقط برای ایمنی)
+  // سپس حالت cover رو اضافه کن تا از کناره‌ها حرکت کنن به وسط (transform 0)
+  setTimeout(() => {
+    openingOverlay.classList.add('cover');
+    // لوگو مخفی باشه یا fade in سریع
+    openingOverlay.classList.add('logo-in');
+  }, 20);
+
+  // بعد از مدت زمان انیمیشن callback رو اجرا کن
+  setTimeout(() => {
+    if (typeof callback === 'function') callback();
+  }, 600); // کوتاهتر از reveal total
+}
+
+/* play reveal (نیمه‌ها از وسط باز میشن و صفحه نمایش داده میشه) */
+function playRevealSequence() {
+  // remove logo quickly
+  openingOverlay.classList.remove('logo-in');
+  // اجرا reveal تا نیمه‌ها برن کنار
+  setTimeout(() => {
+    openingOverlay.classList.add('reveal');
+    openingOverlay.classList.remove('cover');
+  }, 80);
+
+  // در پایان overlay رو مخفی کن
+  setTimeout(() => {
+    openingOverlay.classList.add('hidden');
+  }, 700);
+}
+
+/* جایگزین listenerها با navigateTo */
+navLinks.forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    const target = link.getAttribute("data-target");
+    navigateTo(target);
+  });
+});
+if (anotherLink) {
+  anotherLink.addEventListener("click", e => {
+    e.preventDefault();
+    const target = anotherLink.getAttribute("data-target");
+    navigateTo(target);
+  });
+}
+
+/* بارگذاری اولیه: اول اوپنینگ رو اجرا کن، بعد صفحه‌ای که آخر باز شده نمایش داده شه */
+window.addEventListener("DOMContentLoaded", () => {
+  const last = localStorage.getItem(STORAGE_SECTION) || "home";
+  // start opening animation and then show last
+  playOpeningSequence(() => {
+    _showSectionImmediate(last);
+    // بعد از نمایش اولیه میخوایم انیمیشنهای مشاهده‌شدن المان‌ها رو فعال کنیم
+    setupHomeObservations();
+  });
+});
+
+/* هنگام تغییر اندازه یا رفتارهای دیگه، اطمینان از currentSection */
+window.addEventListener('resize', () => {
+  // no-op for now, but can recalc if needed
+});
+
+/* optional: تلاش برای نمایش انیمیشن هنگام بستن صفحه (mild attempt — بعضی مرورگرها محدود می‌کنند) */
+window.addEventListener('beforeunload', (e) => {
+  // سعی می‌کنیم یک کاور کوتاه نمایش بدیم؛ اما مرورگر ممکنه اون رو بلاک کنه.
+  openingOverlay.classList.remove('hidden');
+  openingOverlay.classList.add('cover');
+  openingOverlay.classList.remove('reveal');
+  openingOverlay.classList.add('logo-in');
+  // توجه: این کد تضمینی نیست برای همه مرورگرها.
+});
+
+
+/* ---------- Slide-in when visible (home elements) ---------- */
+function setupHomeObservations() {
+    // المان‌هایی که میخواهیم انیمیشن داشته باشند — انتخاب پیش‌فرض
+    const targets = document.querySelectorAll('#home .hero, #home .titr, #home .tagline, #home .cta-button, #home .feature-card');
+  
+    targets.forEach(el => {
+      el.classList.add('slide-in');
+    });
+  
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          // اگر نمیخوای دوباره انیمیشن تکرار بشه، معیار زیر رو فعال کن
+          // obs.unobserve(entry.target);
+        } else {
+          // اگر میخوای وقتی از دید خارج شد کلاس حذف بشه (تا با اسکرول دوباره اجرا بشه)
+          entry.target.classList.remove('in-view');
+        }
+      });
+    }, { threshold: 0.18 });
+  
+    targets.forEach(t => obs.observe(t));
+  }
+
