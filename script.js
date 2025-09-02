@@ -438,4 +438,10 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-console.log(navLinks)
+// Smooth scrolling
+document.querySelector('.vijegi').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector('#features').scrollIntoView({
+        behavior: 'smooth'
+    });
+});
