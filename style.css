@@ -305,6 +305,12 @@ footer {
     transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 500ms ease;
     pointer-events: none;
   }
+
+@media (max-width: 768px){
+    #opening-logo {
+    width: 300px;
+    }
+}
   
   /* حالتِ نمایان شدن لوگو */
   #opening-overlay.logo-in #opening-logo {
@@ -338,3 +344,4 @@ footer {
     opacity: 1;
   }
   
+
