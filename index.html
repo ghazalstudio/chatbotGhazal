@@ -294,12 +294,17 @@
     <!-- صحنه -->
     <div id="canvas-container"></div>
 
-    <!-- اوپنینگ -->
+
+    <!-- ADD: opening overlay (put this just after #canvas-container) -->
     <div id="opening-overlay" aria-hidden="true">
         <div class="split left"></div>
         <div class="split right"></div>
         <img id="opening-logo" src="2.png" alt="logo" />
     </div>
+    <!-- /ADD -->
+
+
+
 
 
     <!-- nav ----------------->
@@ -320,15 +325,17 @@
         <header>
             <div class="container">
                 <div class="titr">هوش مصنوعی غزال</div>
+                <div class="titr">V1.1</div>
                 <div class="tagline">توسعه یافته توسط گروه غزال کست</div>
             </div>
         </header>
 
         <section class="hero">
             <div class="container">
-                <h1>دسترسی راحت تر به منابع معتبر</h1>
+                <h1>دسترسی راحت تر به منابع معتبر و چت ساده</h1>
                 <p>این هوش مصنوعی برای دسترسی راحت تر به منابعی از جمله ویکی پدیا ساخته شده و شما با وارد کردن کلید واژه
-                    میتوانید یک خلاصه ای از آن بدست آورید</p>
+                    میتوانید یک خلاصه ای از آن بدست آورید الیته در ورژن 1.1 جواب دهی به سوالات متفرقه ی آن بیشتر شده ولی
+                    همه چیز را جواب نمی تواند بدهد</p>
                 <a href="#" data-target="chat" class="cta-button">شروع به استفاده</a>
                 <a href="#features" class="vijegi">ویژگی ها</a>
             </div>
@@ -336,7 +343,7 @@
 
         <section id="features" class="features">
             <div class="container">
-                <h2>ویژگی های هوش مصنوعی غزال</h2>
+                <h2> V1.1 ویژگی های هوش مصنوعی غزال</h2>
                 <div class="feature-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -370,6 +377,19 @@
                         </div>
                         <h3>سایت زیبایی داره</h3>
                         <p>تعریف از خود نباشه ولی خدایی سایت قشنگیه</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor"
+                                class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                                <path
+                                    d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+                            </svg>
+                        </div>
+                        <h3>بهبود جواب دهی</h3>
+                        <p>در ورژن 1.1 پاسخ دهی بهتر شده ولی هنوز جای کار داره</p>
                     </div>
                 </div>
             </div>
@@ -406,7 +426,7 @@
                     <img class="logo" src="1.png">
                 </div>
                 <div>
-                    <h1>هوش مصنوعی غزال</h1>
+                    <h1>v1.1 هوش مصنوعی غزال</h1>
                     <div class="status" id="status"><span id="statusText">آماده</span> <span id="spinner"
                             style="display:none" class="spinner"></span></div>
                 </div>
@@ -424,7 +444,7 @@
             <div class="card" role="main">
                 <div class="messages" id="messages" aria-live="polite">
                     <div class="bubble bot">من یک هوش مصنوعی بدرد نخور هستم و حتی سلام هم نمی تونم بهت بکنم ولی حداقل
-                        بیشتر از تو میتونم حرف بزنم
+                        بیشتر از تو میتونم حرف بزنم ولی انگار توی ورژن جدیدم بهتر شدم
                     </div>
                 </div>
 
@@ -438,8 +458,7 @@
         </div>
     </section>
 
-    <script src="script.js"></script>
+    <script src="script_patched.js"></script>
 </body>
 
 </html>
-
