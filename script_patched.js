@@ -134,8 +134,7 @@ async function initLocalKnowledge() {
   // لیست فایل‌هایی که میخوای لود بشن
   const files = [
     '1.json',
-    '2.json',
-    '3.json'
+    '2.json'
   ];
 
   let allData = [];
