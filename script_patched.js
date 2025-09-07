@@ -134,7 +134,9 @@ async function initLocalKnowledge() {
   // لیست فایل‌هایی که میخوای لود بشن
   const files = [
     '1.json',
-    '2.json'
+    '2.json',
+    '3.json',
+    '4.json'
   ];
 
   let allData = [];
@@ -327,6 +329,8 @@ function localRuleReply(q) {
   if (s.includes("چرا")) {
     return "چون من میگم"
   }
+  const khobs = ["خب", "آره" , "نه" ,"ok" , "اوکی" ];
+  for (const g of khobs) if (s.includes(g)) return "خب";
 
   const greets = ["سلام", "درود", "salam", "hi", "hello", "sghl"];
   for (const g of greets) if (s === g) return " سلام کاری با من داشتی؟";
@@ -337,15 +341,15 @@ function localRuleReply(q) {
   const fohsh = ["کیر", "کص", "کونی", "کون", "باسن", "ممه", "boob", "boobi", "میمی", " جنده", "ass", "asshole", "جندگی",
     "niple", "جق", "jerking", "gooner", "cum", "گشاد", "کص مادر", "دهن لق", "خارکصه", "گاییدم", "خارتو گاییدم",
     "مادر جنده", "گی", "لواط", "gay", "lesbian", "فیلم سوپر", "nigga", "nigger", "nig", "niga", "سیاه پوست", "butt",
-    "نود", "nude", "خنگ", "اوسکول", "اوسکولی", "خنگی", "کونی", "کیری"]
+    "نود", "nude", "خنگ", "اوسکول", "اوسکولی", "خنگی", "کونی", "کیری", "fuck", "fucker", "fucking"]
 
 
   for (const g of fohsh) if (s.includes(g)) return "ادب داشته باش";
 
-  const questions = ["آیا", "چطوری", "چگونه", "چه کسی", "چه طوری",]
+  const questions = ["آیا", "چطوری", "چگونه", "چه کسی", "چه طوری", "چیه"]
   for (const g of questions) if (s.includes(g)) return "نمی دانم , اطلاعی ندارم ";
 
-  if (s === "اسم" || s === "اسمت" || s === "نامت" || s === "نام") return "من یک چت‌بات ساده هستم که بلد نیستم حتی درست بلد نیستم سلام کنم ";
+  if (s === "اسم" || s === "اسمت" || s === "نامت" || s === "نام" || s.includes("اسمت چیه") || s.includes("اسمت") || s.includes("اسم تو")) return "من یک چت‌بات ساده هستم که حتی درست بلد نیستم سلام کنم ";
   if (s === "کشمیری") {
     return "کشمیری مدیر مدرسه ی غزال هست که بین بچه ها خیلی محبوبه حتی از اون دو بار در چنل یوتیوب غزال کست مصاحبه شده";
   }
@@ -383,8 +387,7 @@ const seedTexts = [
   "چرا من باید جوابتو رو بدم؟",
   "........",
   "حوصله ی جواب دادن بهت رو ندارم",
-  "الان وقت جواب دادنت رو ندارم",
-  " چیزی که گفتی رو نفهمیدم و اینکه من کلا بدر نخورم چه توقعی داری از من؟",
+  "الان وقت جواب دادنت رو ندارم"
 ];
 function markovGenerateSimple(q) {
   const a = seedTexts[Math.floor(Math.random() * seedTexts.length)];
